@@ -11,9 +11,7 @@
 }
 
 #demo {
-	/* width: 313px; */
     height: 300px;
-    /* border: 1px solid #ccc; */
     margin: 60px;
     position: relative;
     display: flex;
@@ -21,12 +19,19 @@
 }
 
 #small-box {
+    width: 600px;
+    height: 400px;
 	position: relative;
     z-index: 1;
 }
+#small-box img{
+    width: 100%;
+    height: 100%;
+    display: block;
+}
 
 #magnifier {
-	/* display: none; */
+	display: none;
     width: 140px;
     height: 110px;
     position: absolute;
@@ -38,28 +43,21 @@
 }
 
 #big-box {
-    /* display: none; */
+    display: none;
     position: absolute;
-    top: 0;
-    left: 330px;
-    /* width: 315px;
-    height: 300px; */
-    width: 100px;
-    height: 100px;
+    left: 650px;
+    width: 800px;
+    height: 600px;
     overflow: hidden;
     border: 1px solid #cccccc;
     z-index: 1;
 }
 
 #big-box img {
+    width: 1600px;
+    height: 1200px;
     position: absolute;
     z-index: 5;
-}
-
-img{
-    /* width: 100%;
-    height: 100%;
-    display: block; */
 }
     </style>
 </head>
@@ -67,10 +65,10 @@ img{
     <div id="demo">
         <div id="small-box">
             <div id="magnifier"></div>
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNEpo4-FUUUIq2ssg6bUfejWyYmBa0xYD6cEhO2C3VICn31Pi4cKh4c8LU7iufRWvPqi0&usqp=CAU">
+            <img src="./79a08856e8b1cb0f87867621869dd87a.jpg">
         </div>
         <div id="big-box">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNEpo4-FUUUIq2ssg6bUfejWyYmBa0xYD6cEhO2C3VICn31Pi4cKh4c8LU7iufRWvPqi0&usqp=CAU">
+            <img src="./79a08856e8b1cb0f87867621869dd87a.jpg">
         </div>
     </div>
 </body>
@@ -120,8 +118,8 @@ img{
             // 放大镜移动距离的百分比 = 鼠标移动的距离（或放大镜移动的距离） / 放大镜可移动的最大范围
             var percentX = left / (smallBox.offsetWidth - magnifier.offsetWidth); // 求移动的百分比 max=1
             var percentY = top / (smallBox.offsetHeight - magnifier.offsetHeight);
-            // 
-            bigImg.style.left = (percentX||0.1||1) * (bigBox.offsetWidth-bigImg.offsetWidth ) + 'px';
+            // percentX=(percentX||0.1||1)
+            bigImg.style.left = percentX * (bigBox.offsetWidth-bigImg.offsetWidth ) + 'px';
             bigImg.style.top = percentY * (bigBox.offsetHeight-bigImg.offsetHeight ) + 'px';
         }
         // 参考于 https://blog.csdn.net/Ericpengjun/article/details/103157799
