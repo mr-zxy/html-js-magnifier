@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+	margin: 0;
+    padding: 0;
+}
+
+#demo {
+	/* width: 313px; */
+    height: 300px;
+    /* border: 1px solid #ccc; */
+    margin: 60px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+#small-box {
+	position: relative;
+    z-index: 1;
+}
+
+#magnifier {
+	/* display: none; */
+    width: 140px;
+    height: 110px;
+    position: absolute;
+    background-color: #f7f7f7;
+    border: 1px solid #cccccc;
+    filter: alpha(opacity=60);
+    opacity: 0.6;
+    cursor: move;
+}
+
+#big-box {
+    /* display: none; */
+    position: absolute;
+    top: 0;
+    left: 330px;
+    /* width: 315px;
+    height: 300px; */
+    width: 100px;
+    height: 100px;
+    overflow: hidden;
+    border: 1px solid #cccccc;
+    z-index: 1;
+}
+
+#big-box img {
+    position: absolute;
+    z-index: 5;
+}
+
+img{
+    /* width: 100%;
+    height: 100%;
+    display: block; */
+}
+    </style>
+</head>
+<body>
+    <div id="demo">
+        <div id="small-box">
+            <div id="magnifier"></div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNEpo4-FUUUIq2ssg6bUfejWyYmBa0xYD6cEhO2C3VICn31Pi4cKh4c8LU7iufRWvPqi0&usqp=CAU">
+        </div>
+        <div id="big-box">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRNEpo4-FUUUIq2ssg6bUfejWyYmBa0xYD6cEhO2C3VICn31Pi4cKh4c8LU7iufRWvPqi0&usqp=CAU">
+        </div>
+    </div>
+</body>
+</html>
+<script>
+    window.onload = function () {
+        // 获取各个元素
+        var demo = document.getElementById('demo');
+        var smallBox = document.getElementById('small-box');
+        var magnifier = document.getElementById('magnifier');
+        var bigBox = document.getElementById('big-box');
+        var bigImg = bigBox.getElementsByTagName('img')[0];
+
+        // 鼠标移动到小图片上
+        smallBox.onmouseover = function () {
+            magnifier.style.display = "block";
+            bigBox.style.display = "block";
+        };
+        // 鼠标移出小图片
+        smallBox.onmouseout = function () {
+            magnifier.style.display = 'none';
+            bigBox.style.display = 'none';
+        };
+        // 鼠标在图片上移动
+        smallBox.onmousemove = function (event) {
+            // 获取放大镜左边离图片框的距离
+            var left = event.clientX - demo.offsetLeft - smallBox.offsetLeft - magnifier.offsetWidth / 2;
+            // 获取放大镜上边离图片框的距离
+            var top = event.clientY - demo.offsetTop - smallBox.offsetTop - magnifier.offsetHeight / 2;
+            // 设置水平方向放大镜离图片框最小距离为0，最大距离为：图片框宽度 - 放大镜宽度，这样放大镜就不会超出图片框了
+            if (left < 0) {
+                left = 0;
+            } else if (left > (smallBox.offsetWidth - magnifier.offsetWidth)) {
+                left = smallBox.offsetWidth - magnifier.offsetWidth;
+            }
+            // 垂直方向同理
+            if (top < 0) {
+                top = 0;
+            } else if (top > (smallBox.offsetHeight - magnifier.offsetHeight)) {
+                top = smallBox.offsetHeight - magnifier.offsetHeight;
+            }
+
+            // 设置放大镜的left\top值，让放大镜跟随鼠标移动
+            magnifier.style.left = left + 'px';
+            magnifier.style.top = top + 'px';
+
+            // 放大镜移动距离的百分比 = 鼠标移动的距离（或放大镜移动的距离） / 放大镜可移动的最大范围
+            var percentX = left / (smallBox.offsetWidth - magnifier.offsetWidth); // 求移动的百分比 max=1
+            var percentY = top / (smallBox.offsetHeight - magnifier.offsetHeight);
+            // 
+            bigImg.style.left = (percentX||0.1||1) * (bigBox.offsetWidth-bigImg.offsetWidth ) + 'px';
+            bigImg.style.top = percentY * (bigBox.offsetHeight-bigImg.offsetHeight ) + 'px';
+        }
+        // 参考于 https://blog.csdn.net/Ericpengjun/article/details/103157799
+    }
+</script>
